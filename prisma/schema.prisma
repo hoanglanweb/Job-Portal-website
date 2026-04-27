@@ -1,0 +1,73 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Get a free hosted Postgres database in seconds: `npx create-db`
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+enum Role {
+  CANDIDATE
+  RECRUITER
+}
+
+model User {
+  id        String   @id @default(cuid())
+  name      String
+  email     String   @unique
+  password  String
+  role      Role
+  avatar    String?
+  resumeUrl String?
+  createdAt DateTime @default(now())
+
+  jobs         Job[]
+  applications Application[]
+  savedJobs    SavedJob[]
+}
+
+model Job {
+  id           String   @id @default(cuid())
+  title        String
+  companyName  String
+  location     String
+  salary       String?
+  description  String
+  requirements String
+  createdAt    DateTime @default(now())
+
+  recruiterId String
+  recruiter   User   @relation(fields: [recruiterId], references: [id])
+
+  applications Application[]
+  savedJobs    SavedJob[]
+}
+
+model Application {
+  id        String   @id @default(cuid())
+  status    String   @default("pending")
+  createdAt DateTime @default(now())
+
+  userId String
+  jobId  String
+
+  user User @relation(fields: [userId], references: [id])
+  job  Job  @relation(fields: [jobId], references: [id])
+}
+
+model SavedJob {
+  id String @id @default(cuid())
+
+  userId String
+  jobId  String
+
+  user User @relation(fields: [userId], references: [id])
+  job  Job  @relation(fields: [jobId], references: [id])
+}
