@@ -7,6 +7,7 @@ import { useSession, signOut } from 'next-auth/react';
 function Header() {
     const [isOpen, setIsOpen] = useState(false);
     const { data: session } = useSession()
+    const role = session?.user.role //!: lấy role từ session
     return (
         <header className="bg-[#6366F1] text-white py-4 px-6 md:px-12 flex justify-between items-center sticky top-0 z-50 shadow-md">
             {/*//?: Logo - Sử dụng màu trắng để tinh tế hoặc màu vàng nhấn nhẹ */}
@@ -38,9 +39,11 @@ function Header() {
                     ) : (
                         <Link href="/login" className="text-white font-medium">Đăng nhập</Link>
                     )}
-                    <button className="bg-[#F59E0B] text-white font-bold py-3 px-8 rounded-lg shadow-lg">
-                        Đăng tuyển
-                    </button>
+                    {role === "RECRUITER" && (
+                        <button className="bg-[#F59E0B] text-white font-bold py-3 px-8 rounded-lg shadow-lg">
+                            Đăng tuyển
+                        </button>
+                    )}
                 </div>
             </div>
 
@@ -48,7 +51,7 @@ function Header() {
             <div className="hidden md:flex items-center gap-6">
                 {session ? (
                     <>
-                        <span className="text-white font-medium">👋 {session.user?.name}</span>
+                        <span className="text-white font-medium">{session.user?.name}</span>
                         <button
                             onClick={() => signOut({ callbackUrl: "/" })}
                             className="text-white font-medium border border-white px-4 py-2 rounded-lg"
@@ -59,14 +62,16 @@ function Header() {
                 ) : (
                     <Link href="/login" className="text-white font-medium">Đăng nhập</Link>
                 )}
-                <button className="bg-[#F59E0B] hover:bg-[#D97706] text-white font-semibold py-2 px-5 rounded-lg transition active:scale-95 shadow-sm">
-                    Đăng tuyển
-                </button>
+                {role === "RECRUITER" && (
+                    <button className="bg-[#F59E0B] text-white font-bold py-3 px-8 rounded-lg shadow-lg">
+                        Đăng tuyển
+                    </button>
+                )}
             </div>
 
             {/* Mobile Menu Button (Hamburger) */}
             <button
-                className="md:hidden z-[60] text-white focus:outline-none"
+                className="md:hidden z-60 text-white focus:outline-none"
                 onClick={() => setIsOpen(!isOpen)}
             >
                 <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
