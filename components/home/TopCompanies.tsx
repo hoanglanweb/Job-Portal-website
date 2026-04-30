@@ -13,18 +13,23 @@ function TopCompanies() {
     return (
         <section className="py-16 bg-white overflow-hidden">
             <div className="container mx-auto px-4">
-                <p className="text-center text-[#073B4C]/60 uppercase tracking-[0.2em] mb-10 text-xs md:text-sm font-bold">
+                {/* Chuyển text sang màu Xám Slate đậm (1E293B) với độ mờ nhẹ để trông sang trọng hơn */}
+                <p className="text-center  text-[#1E293B]/50 uppercase tracking-[0.2em] mb-10 text-xs md:text-sm font-extrabold">
                     Tin dùng bởi các tập đoàn lớn
                 </p>
 
                 {/* Container cho hiệu ứng chạy ngang */}
                 <div className="relative flex overflow-x-hidden group">
+                    {/* 
+                        Mẹo nhỏ: Trong LogoGroup, bạn nên chuyển các logo sang màu Grayscale (đen trắng) 
+                        hoặc màu #64748B và chỉ hiện màu gốc khi hover để giao diện cực kỳ chuyên nghiệp.
+                    */}
                     <div className="flex animate-marquee whitespace-nowrap gap-12 md:gap-24 items-center">
                         <LogoGroup />
                         <LogoGroup /> {/* Lặp lại để tạo vòng lặp vô tận */}
                     </div>
 
-                    {/* Hiệu ứng bóng mờ 2 đầu để trông mượt hơn */}
+                    {/* Hiệu ứng bóng mờ 2 đầu (Gradient) giữ nguyên màu trắng từ nền bg-white */}
                     <div className="pointer-events-none absolute inset-y-0 left-0 w-20 bg-gradient-to-r from-white to-transparent"></div>
                     <div className="pointer-events-none absolute inset-y-0 right-0 w-20 bg-gradient-to-l from-white to-transparent"></div>
                 </div>

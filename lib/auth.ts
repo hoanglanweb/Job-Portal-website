@@ -11,48 +11,33 @@ export const authOptions: NextAuthOptions = {
         email: { type: "text" },
         password: { type: "password" },
       },
-
       async authorize(credentials) {
-        if (!credentials?.email || !credentials?.password) {
-          return null;
-        }
+        if (!credentials?.email || !credentials?.password) return null;
 
         const user = await prisma.user.findUnique({
           where: {
-            email: credentials.email,
+            email: credentials.email, // ✅ sửa lại
           },
         });
 
-        if (!user) {
-          return null;
-        }
+        if (!user) return null;
 
         const isPasswordCorrect = await compare(
           credentials.password,
           user.password,
         );
 
-        if (!isPasswordCorrect) {
-          return null;
-        }
+        if (!isPasswordCorrect) return null;
 
-        // ✅ QUAN TRỌNG: phải return user
         return {
-          id: user.id,
-          email: user.email,
-          name: user.name,
+          id: user.id, // ✅ sửa lại
+          email: user.email, // ✅ sửa lại
+          name: user.name, // ✅ sửa lại
         };
       },
     }),
   ],
-
-  session: {
-    strategy: "jwt",
-  },
-
-  pages: {
-    signIn: "/login",
-  },
-
+  session: { strategy: "jwt" },
+  pages: { signIn: "/login" },
   secret: process.env.NEXTAUTH_SECRET,
 };
